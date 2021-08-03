@@ -6,7 +6,9 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -23,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.fivecontacts.R;
+import com.example.fivecontacts.main.dados.Contatos;
 import com.example.fivecontacts.main.model.Contato;
 import com.example.fivecontacts.main.model.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -55,7 +58,7 @@ public class AlterarContatos_Activity extends AppCompatActivity implements Botto
             if (params!=null) {
                 //Recuperando o Usuario
                 user = (User) params.getSerializable("usuario");
-                setTitle("Alterar Contatos de Emergência");
+                setTitle("Adicionar Contatos de Emergência");
             }
         }
         lv = findViewById(R.id.listContatosDoCell);
@@ -72,29 +75,6 @@ public class AlterarContatos_Activity extends AppCompatActivity implements Botto
             }
         });
     }
-
-    public void salvarContato (Contato w){
-        SharedPreferences salvaContatos =
-                getSharedPreferences("contatos",Activity.MODE_PRIVATE);
-
-        int num = salvaContatos.getInt("numContatos", 0); //checando quantos contatos já tem
-        SharedPreferences.Editor editor = salvaContatos.edit();
-        try {
-            ByteArrayOutputStream dt = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(dt);
-            dt = new ByteArrayOutputStream();
-            oos = new ObjectOutputStream(dt);
-            oos.writeObject(w);
-            String contatoSerializado= dt.toString(StandardCharsets.ISO_8859_1.name());
-            editor.putString("contato"+(num+1), contatoSerializado);
-            editor.putInt("numContatos",num+1);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        editor.commit();
-        user.getContatos().add(w);
-    }
-
 
     @Override
     protected void onStop() {
@@ -145,27 +125,37 @@ public class AlterarContatos_Activity extends AppCompatActivity implements Botto
             i++;
         }
 
-        if (nomesContatos !=null) {
-            for(int j=0; j<=nomesContatos.length; j++) {
-                ArrayAdapter<String> adaptador;
-                adaptador = new ArrayAdapter<String>(this, R.layout.list_view_layout, nomesContatos);
-                lv.setAdapter(adaptador);
-                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        for (int j=0; j<=nomesContatos.length; j++) {
+            ArrayAdapter<String> adaptador;
+            adaptador = new ArrayAdapter<String>(this, R.layout.list_view_layout, nomesContatos);
+            lv.setAdapter(adaptador);
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Contato c= new Contato();
+                    c.setNome(nomesContatos[i]);
+                    c.setNumero("tel:+"+telefonesContatos[i]);
 
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Contato c= new Contato();
-                        c.setNome(nomesContatos[i]);
-                        c.setNumero("tel:+"+telefonesContatos[i]);
-                        salvarContato(c);
+                    try {
+                        Contatos.salvarContato(AlterarContatos_Activity.this, c, user);
+
                         Intent intent = new Intent(getApplicationContext(), ListaDeContatos_Activity.class);
                         intent.putExtra("usuario", user);
                         startActivity(intent);
                         finish();
-
+                    } catch (RuntimeException e) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(AlterarContatos_Activity.this);
+                        builder.setTitle("Lista de contatos cheia")
+                                .setMessage("Você excedeu o número de contatos, caso queira adicionar um novo, remova algum");
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
                     }
-                });
-            }
+                }
+            });
         }
     }
 

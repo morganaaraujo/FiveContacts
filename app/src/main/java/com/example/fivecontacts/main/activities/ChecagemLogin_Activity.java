@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fivecontacts.R;
+import com.example.fivecontacts.main.dados.Contatos;
 import com.example.fivecontacts.main.model.Contato;
 import com.example.fivecontacts.main.model.User;
 
@@ -34,42 +35,25 @@ public class ChecagemLogin_Activity extends AppCompatActivity {
     EditText edUser;
     EditText edPass;
     Button btLogar;
-    Button btNovo;
+    TextView btNovo;
     TextView mTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checagem_login);
 
-      /*  User userPDM= new User();
-        userPDM.setNome("Einstein");
-      // userPDM.setTema_escuro(true);
-        Contato c= new Contato();
-        c.setNome("Newton");
-        c.setNumero("tel:+888888");
-        userPDM.getContatos().add(c);
-
-        Intent intentPDM= new Intent(this, ListaDeContatos_Activity.class);
-        intentPDM.putExtra("usuarioPDM",userPDM);
-        startActivity(intentPDM);
-
-*/
-
         //Existe um usuário padrão logado?
         if(montarObjetoUserSemLogar()){
             User user = montarObjetoUser();
 
-            preencherListaDeContatos(user);
+            Contatos.atualizarListaDeContatos(this, user);
 
             //Abrir a atividade de Lista de Contatos
             Intent intent = new Intent(ChecagemLogin_Activity.this, ListaDeContatos_Activity.class);
             intent.putExtra("usuario",user);
             startActivity(intent);
             finish();
-
-
-
-        }else { //Checar Usuário e Senha ou clicar em criar novo
+        } else { //Checar Usuário e Senha ou clicar em criar novo
             btLogar = findViewById(R.id.btLogar);
             btNovo = findViewById(R.id.btNovo);
             edUser = findViewById(R.id.edT_Login);
@@ -129,7 +113,7 @@ public class ChecagemLogin_Activity extends AppCompatActivity {
                                 && (senhaSalva.compareTo(senha) == 0)) {
 
                             User user = montarObjetoUser();
-                            preencherListaDeContatos(user);
+                            Contatos.atualizarListaDeContatos(ChecagemLogin_Activity.this, user);
                             //Abrindo a Lista de Contatos
                             Intent intent = new Intent(ChecagemLogin_Activity.this, ListaDeContatos_Activity.class);
                             intent.putExtra("usuario", user);
@@ -159,8 +143,6 @@ public class ChecagemLogin_Activity extends AppCompatActivity {
             });
 
         }
-
-
    }
 
     private User montarObjetoUser() {
@@ -171,10 +153,8 @@ public class ChecagemLogin_Activity extends AppCompatActivity {
         String nomeSalvo = temUser.getString("nome","");
         String emailSalvo = temUser.getString("email","");
         boolean manterLogado=temUser.getBoolean("manterLogado",false);
-        boolean temaEscuro=temUser.getBoolean("tema",false);
 
         user=new User(nomeSalvo,loginSalvo,senhaSalva,emailSalvo,manterLogado);
-        user.setTema_escuro(temaEscuro);
         return user;
     }
 
@@ -183,40 +163,6 @@ public class ChecagemLogin_Activity extends AppCompatActivity {
         SharedPreferences temUser= getSharedPreferences("usuarioPadrao", Activity.MODE_PRIVATE);
         boolean manterLogado = temUser.getBoolean("manterLogado",false);
         return manterLogado;
-    }
-
-    protected void preencherListaDeContatos(User user) {
-
-        SharedPreferences recuperarContatos = getSharedPreferences("contatos", Activity.MODE_PRIVATE);
-
-        int num = recuperarContatos.getInt("numContatos", 0);
-        ArrayList<Contato> contatos = new ArrayList<Contato>();
-
-        Contato contato;
-
-
-        for (int i = 1; i <= num; i++) {
-            String objSel = recuperarContatos.getString("contato" + i, "");
-            if (objSel.compareTo("") != 0) {
-                try {
-                    ByteArrayInputStream bis =
-                            new ByteArrayInputStream(objSel.getBytes(StandardCharsets.ISO_8859_1.name()));
-                    ObjectInputStream oos = new ObjectInputStream(bis);
-                    contato = (Contato) oos.readObject();
-
-                    if (contato != null) {
-                        contatos.add(contato);
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-
-        }
-        user.setContatos(contatos);
     }
 
 }

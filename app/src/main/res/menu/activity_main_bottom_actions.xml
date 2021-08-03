@@ -7,12 +7,13 @@
         <item
             android:id="@+id/anvLigar"
             android:checked="true"
-            android:icon="@drawable/ic_action_ligar"
-            android:title="Ligar" />
+            android:icon="@drawable/ic_home"
+            android:title="Início"
+            android:visible="true" />
         <item
             android:id="@+id/anvMudar"
             android:icon="@drawable/ic_action_mudar"
-            android:title="Mudar Contatos" />
+            android:title="Adicionar contato" />
         <item
             android:id="@+id/anvPerfil"
             android:icon="@drawable/ic_action_perfil"

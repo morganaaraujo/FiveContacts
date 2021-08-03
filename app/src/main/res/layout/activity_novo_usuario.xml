@@ -12,7 +12,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="70dp"
         android:layout_marginEnd="15dp"
-        android:background="#88FCD3C6"
+        android:background="#27DBB3E3"
         android:paddingBottom="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -28,7 +28,7 @@
             android:inputType="textPersonName"
             android:text="Novo Usuário"
             android:textAlignment="center"
-            android:textColor="#FF5722"
+            android:textColor="#8900A1"
             android:textColorLink="#FFFFFF"
             android:textSize="30sp"
             android:textStyle="bold"
@@ -47,7 +47,7 @@
             android:inputType="textPersonName"
             android:text="  Usuário"
             android:textAlignment="viewStart"
-            android:textColor="#FF5722"
+            android:textColor="#8900A1"
             android:textColorLink="#FFFFFF"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -65,7 +65,7 @@
             android:inputType="text"
             android:text="  Senha"
             android:textAlignment="viewStart"
-            android:textColor="#FF5722"
+            android:textColor="#8900A1"
             android:textColorLink="#FFFFFF"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -77,8 +77,8 @@
             android:id="@+id/btCriar"
             android:layout_width="271dp"
             android:layout_height="55dp"
-            android:layout_marginTop="28dp"
-            android:background="#FF5722"
+            android:layout_marginTop="30dp"
+            android:background="#8900A1"
             android:text="Criar"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
@@ -86,7 +86,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.504"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/swTema" />
+            app:layout_constraintTop_toBottomOf="@+id/swLogado" />
 
         <EditText
             android:id="@+id/edtNome"
@@ -98,7 +98,7 @@
             android:inputType="textPersonName"
             android:text="  Nome"
             android:textAlignment="viewStart"
-            android:textColor="#FF5722"
+            android:textColor="#8900A1"
             android:textColorLink="#FFFFFF"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -113,7 +113,7 @@
             android:layout_marginTop="10dp"
             android:showText="false"
             android:text="Manter Logado?"
-            android:textColor="#FF5722"
+            android:textColor="#8900A1"
             android:textOff="Não"
             android:textOn="Sim"
             android:textSize="24sp"
@@ -130,26 +130,13 @@
             android:ems="10"
             android:text="  E-mail"
             android:textAlignment="viewStart"
-            android:textColor="#FF5722"
+            android:textColor="#8900A1"
             android:textColorLink="#FFFFFF"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.563"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edt_Pass2" />
-
-        <Switch
-            android:id="@+id/swTema"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tema escuro?"
-            android:textColor="#FF5722"
-            android:textOff="Não"
-            android:textOn="Sim"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/swLogado"
-            app:layout_constraintTop_toBottomOf="@+id/swLogado" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
